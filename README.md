@@ -1,1 +1,81 @@
 # pffp-2023
+
+## Despliegue de gitlab
+
+En gitlab tenemos un despliegue docker-compose para levantar un gitlab de pruebas:
+
+```
+docker-compose up -d
+```
+
+Para acceder por primera vez con root la password está en **/etc/gitlab/initial_root_password**
+
+## Despliegue de k3d
+
+Para simular un cluster Kubernetes en docker usaremos k3d. Para desplegarlo:
+
+Necesamos:
+* docker
+* kubectl (se puede instalar con apt)
+
+Instalación:
+
+```
+wget -q -O - https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
+```
+
+Creación de clúster con 3 nodos
+
+```
+k3d cluster create mi-cluster --agents 3
+```
+
+Parar, destruir, iniciar podemos usar comandos del tipo **k3d cluster** (stop, start, delete...)
+
+## Integración de Gitlab con el cluster Kubernetes
+
+### Instalación de Helm
+
+Necesitamos disponer de helm en el equipo de trabajo para poder instalar apps en el cluster. Para instalarlo:
+
+```
+curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
+sudo apt-get install apt-transport-https --yes
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+sudo apt-get update
+sudo apt-get install helm
+```
+
+### Creación del agent
+
+Para la integración:
+
+* Creamos proyecto en gitlab. Vamos a Infraestructure->Kubernetes clusters->Connect a cluster
+* Creamos el archivo de configuración del agente en la raíz del repositorio en **.gitlab/agents/agent/config.yaml** (en este caso el nombre del agente es "agent")
+* Creamos un agent (de nombre agent) y lo registramos (Register). Desde la ventana emergente copiamos el comando del tipo:
+
+```
+helm repo add gitlab https://charts.gitlab.io
+helm repo update
+helm upgrade --install agent gitlab/gitlab-agent \
+    --namespace gitlab-agent-agent \
+    --create-namespace \
+    --set image.tag=v15.8.0 \
+    --set config.token=6RNphsy-k5fsk7CEystKU5TyWjCJ4VwWyskQ989paAmffMeYxQ \
+    --set config.kasAddress=wss://localhost/-/kubernetes-agent/
+```
+
+El comando anterior añade el repo de gitlab a Helm, lo actualiza e instala el agente.
+
+Para ver los logs del agente:
+
+```
+kubectl logs -f -l=app=gitlab-agent -n gitlab-agent-agent
+```
+
+
+
+
+
+
+
