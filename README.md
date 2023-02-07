@@ -84,10 +84,9 @@ Para la integración:
 helm repo add gitlab https://charts.gitlab.io
 helm repo update
 helm upgrade --install agent gitlab/gitlab-agent \
-    --namespace gitlab-agent-agent \
-    --create-namespace \
+    --namespace default \
     --set image.tag=v15.8.0 \
-    --set config.token=6RNphsy-k5fsk7CEystKU5TyWjCJ4VwWyskQ989paAmffMeYxQ \
+    --set config.token=Xg9NURvvUWxGMKyTN7P71-CNhU_7aFcup8HTP_fuzsfz2HiKJA \
     --set config.kasAddress=wss://localhost/-/kubernetes-agent/
 ```
 
