@@ -7,6 +7,7 @@ services:
       GITLAB_OMNIBUS_CONFIG: |
         external_url 'https://localhost'
         # Add any other gitlab.rb configuration here, each on its own line
+      GITLAB_ROOT_PASSWORD: Abc1234.
     ports:
       - '80:80'
       - '443:443'
