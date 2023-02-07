@@ -55,7 +55,7 @@ helm repo add jupyterhub https://jupyterhub.github.io/helm-chart/
 helm repo update
 ```
 
-Actualizamos e instalamos el chart:
+Actualizamos e instalamos el chart en el namespace **default**:
 
 ```
 helm install jupyterhub/jupyterhub --generate-name  --namespace=default
@@ -66,6 +66,11 @@ Si no tenemos Ingress, activamos una redirección con a través de localhost:808
 ```
 kubectl --namespace=default port-forward service/proxy-public 8080:http &
 ```
+
+Para acceder:
+
+* user: jovyan
+* password: jupyter
 
 ### Creación del agent
 
