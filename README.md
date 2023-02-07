@@ -95,5 +95,5 @@ El comando anterior añade el repo de gitlab a Helm, lo actualiza e instala el a
 Para ver los logs del agente:
 
 ```
-kubectl logs -f -l=app=gitlab-agent -n gitlab-agent-agent
+kubectl logs -f -l=app=gitlab-agent -n default
 ```
