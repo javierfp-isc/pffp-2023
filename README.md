@@ -46,6 +46,27 @@ sudo apt-get update
 sudo apt-get install helm
 ```
 
+### Instalación de Jupytherhub en el clúster con Helm
+
+Para la instalación añadimos el repositorio
+
+```
+helm repo add jupyterhub https://jupyterhub.github.io/helm-chart/
+helm repo update
+```
+
+Actualizamos e instalamos el chart:
+
+```
+helm install jupyterhub/jupyterhub --generate-name  --namespace=default
+```
+
+Si no tenemos Ingress, activamos una redirección con:
+
+```
+kubectl --namespace=default port-forward service/proxy-public 8080:http
+```
+
 ### Creación del agent
 
 Para la integración:
@@ -72,10 +93,3 @@ Para ver los logs del agente:
 ```
 kubectl logs -f -l=app=gitlab-agent -n gitlab-agent-agent
 ```
-
-
-
-
-
-
-
