@@ -61,10 +61,10 @@ Actualizamos e instalamos el chart:
 helm install jupyterhub/jupyterhub --generate-name  --namespace=default
 ```
 
-Si no tenemos Ingress, activamos una redirección con:
+Si no tenemos Ingress, activamos una redirección con a través de localhost:8080:
 
 ```
-kubectl --namespace=default port-forward service/proxy-public 8080:http
+kubectl --namespace=default port-forward service/proxy-public 8080:http &
 ```
 
 ### Creación del agent
