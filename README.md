@@ -83,6 +83,12 @@ gitlab_kas['listen_network'] = 'tcp'
 gitlab_kas['listen_websocket'] = false
 ```
 
+Ejecutamos:
+
+```
+gitlab-ctl reconfigure
+```
+
 Para la integración:
 
 * Creamos proyecto en gitlab. Vamos a Infraestructure->Kubernetes clusters->Connect a cluster
