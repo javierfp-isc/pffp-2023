@@ -74,6 +74,15 @@ Para acceder:
 
 ### Creación del agent
 
+Editamos en gitlab el archivo /etc/gitlab/gitlab.rb añadiendo las líneas:
+
+```
+gitlab_kas['enable'] = true
+gitlab_kas['listen_address'] = '0.0.0.0:8150'                                                                        
+gitlab_kas['listen_network'] = 'tcp'                         
+gitlab_kas['listen_websocket'] = false
+```
+
 Para la integración:
 
 * Creamos proyecto en gitlab. Vamos a Infraestructure->Kubernetes clusters->Connect a cluster
@@ -86,13 +95,13 @@ helm repo update
 helm upgrade --install agent gitlab/gitlab-agent \
     --namespace default \
     --set image.tag=v15.8.0 \
-    --set config.token=Xg9NURvvUWxGMKyTN7P71-CNhU_7aFcup8HTP_fuzsfz2HiKJA \
-    --set config.kasAddress=wss://localhost/-/kubernetes-agent/
+    --set config.token=DhDy1tXxgxEZyeGgTQcon4ux9myji9eS32m7NxnTyfWKs_Tfwg \
+    --set config.kasAddress=grpc://172.17.0.1:8150/-/kubernetes-agent
 ```
 
 El comando anterior añade el repo de gitlab a Helm, lo actualiza e instala el agente.
 
-Para ver los logs del agente:
+Para ver los logs del pod del agente:
 
 ```
 kubectl logs -f -l=app=gitlab-agent -n default
